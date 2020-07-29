@@ -1,6 +1,6 @@
-const getNotes = require('./note.js');
+const notes = require('./note.js');
 const yargs = require('yargs');
-const { argv } = require('yargs');
+
 
 // console.log(process.argv);
 
@@ -23,8 +23,7 @@ yargs.command({
         }
     },
     handler: function(argv){
-        console.log('Title '+ argv.title);
-        console.log('Body '+ argv.body);
+        notes.addNote(argv.title, argv.body)
     }
 });
 
