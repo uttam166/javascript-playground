@@ -6,11 +6,9 @@ const getNotes = function(){
 
 const addNote = function(title, body){
     const notes = loadNotes()
-    // console.log(notes);
     const duplicateNotes = notes.filter(function(note){
         return note.title === title;
     })
-    // console.log(duplicateNotes.length);
 
     if(duplicateNotes.length === 0){
         notes.push({
@@ -22,6 +20,14 @@ const addNote = function(title, body){
     }else{
         console.log("Title alrady exits.");
     }
+}
+
+const removeNotes = function(title){
+    const notes = loadNotes()
+    const notesToKeep = notes.filter(function(note){
+        return note.title !== title;
+    });
+    saveNotes(notesToKeep);
 }
 
 const saveNotes = function(notes){
@@ -42,5 +48,6 @@ const loadNotes = function(){
 
 module.exports = {
     getNotes : getNotes,
-    addNote : addNote   
+    addNote : addNote,
+    removeNotes : removeNotes,
 }
