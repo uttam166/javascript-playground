@@ -7,11 +7,21 @@ const getNotes = function(){
 const addNote = function(title, body){
     const notes = loadNotes()
     // console.log(notes);
-    notes.push({
-        title: title,
-        body: body
+    const duplicateNotes = notes.filter(function(note){
+        return note.title === title;
     })
-    saveNotes(notes);
+    // console.log(duplicateNotes.length);
+
+    if(duplicateNotes.length === 0){
+        notes.push({
+            title: title,
+            body: body
+        })
+        saveNotes(notes);
+        console.log("new notes added.");    
+    }else{
+        console.log("Title alrady exits.");
+    }
 }
 
 const saveNotes = function(notes){
