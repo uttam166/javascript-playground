@@ -1,5 +1,9 @@
 const getNotes = require('./note.js');
 
-const msg = getNotes();
+const command = process.argv[2]
 
-console.log(msg);
+if(command === 'add'){
+    console.log('addning notes.')
+}else if(command === 'remove'){
+    console.log('removing a note.')
+}
