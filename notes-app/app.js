@@ -69,4 +69,13 @@ yargs.command({
 });
 
 yargs.parse();
-// console.log(yargs.argv);
+
+
+/**
+ * run add command => node app.js add --title="Note title" --body="note body";
+ * run remove command => node app.js remove --title="Note title";
+ * run list command => node app.js list;
+ * run read command => node app.js read --title="Note title";
+ * 
+ * run debugger => node inspect app.js add --title="debugging" --body="let's debug"
+ */
