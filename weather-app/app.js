@@ -2,21 +2,21 @@
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
 
-const address = 'mekhliganj';
+const address = 'siliguri';
 
 if(!address){
     return console.log('Please provide an address.')
 }else{
-    geocode(address, (error, data) => {
+    geocode(address, (error, {latitude, longitude, place_name}) => {
         if(error){
             return console.log(error);
         }
 
-        forecast( data.latitude, data.longitude, (error, forecastData) => {
+        forecast( latitude, longitude, (error, forecastData) => {
             if(error){
                 return console.log(error);
             }
-            console.log(data.place_name);
+            console.log(place_name);
             console.log(forecastData);
         });
         
