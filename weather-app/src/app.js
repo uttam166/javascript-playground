@@ -22,11 +22,29 @@ app.use(express.static(publicDirPath));
 
 
 app.get('/',(req, res) => {
-    res.render('index')
+    res.render('index',{
+        title: 'weather',
+        name: 'uttam',
+    })
 })
 
 app.get('/weather', (req, res) => {
     res.send('weather');
+})
+
+app.get('/help', (req, res) => {
+    res.render('help', {
+        helpText: 'This is some helpful text.',
+        title: 'Help',
+        name: 'uttam'
+    })
+})
+app.get('*', (req, res) => {
+    res.render('404',{
+        errorMessage: 'page not found',
+        title: '404 page',
+        name: 'uttam'
+    });
 })
 
 app.listen(3000, () =>{
