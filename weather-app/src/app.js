@@ -1,8 +1,8 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
-// const geocode = require('../utils/geocode');
-// const forecast = require('../utils/forecast');
+const geocode = require('./utils/geocode');
+const forecast = require('./utils/forecast');
 
 
 const app = express();
@@ -23,13 +23,34 @@ app.use(express.static(publicDirPath));
 
 app.get('/',(req, res) => {
     res.render('index',{
-        title: 'weather',
+        title: 'Welcome to sofcripto weather forcast.',
         name: 'uttam',
     })
 })
 
 app.get('/weather', (req, res) => {
-    res.send('weather');
+    if(!req.query.address){
+        return res.send({
+            error: 'Must provide a address.'
+        })
+    }
+
+    geocode(req.query.address, (error, {latitude, longitude, place_name} = {}) => {
+        if(error){
+            return res.send({ error });
+        }
+
+        forecast( latitude, longitude, (error, forecastData) => {
+            if(error){
+                return res.send({ error });
+            }
+            res.send({
+                forecast : forecastData,
+                place_name
+            })
+        });
+        
+    })
 })
 
 app.get('/help', (req, res) => {
@@ -50,27 +71,3 @@ app.get('*', (req, res) => {
 app.listen(3000, () =>{
     console.log('Server starts.')
 })
-
-
-
-
-// const address = 'new delhi';
-
-// if(!address){
-//     return console.log('Please provide an address.')
-// }else{
-//     geocode(address, (error, {latitude, longitude, place_name}) => {
-//         if(error){
-//             return console.log(error);
-//         }
-
-//         forecast( latitude, longitude, (error, forecastData) => {
-//             if(error){
-//                 return console.log(error);
-//             }
-//             console.log(place_name);
-//             console.log(forecastData);
-//         });
-        
-//     })
-// }
