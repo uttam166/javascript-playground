@@ -1,0 +1,1 @@
+console.log('clint side js file..')

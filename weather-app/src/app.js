@@ -1,12 +1,17 @@
+const path = require('path');
 const express = require('express');
-// const geocode = require('./utils/geocode');
-// const forecast = require('./utils/forecast');
+// const geocode = require('../utils/geocode');
+// const forecast = require('../utils/forecast');
 
 
 const app = express();
+const publicDirPath = path.join(__dirname, '../public');
+
+app.set('view engine','hbs')
+app.use(express.static(publicDirPath));
 
 app.get('/',(req, res) => {
-    res.send('hello there!')
+    res.render('index')
 })
 
 app.get('/weather', (req, res) => {
@@ -20,7 +25,7 @@ app.listen(3000, () =>{
 
 
 
-// const address = 'siliguri';
+// const address = 'new delhi';
 
 // if(!address){
 //     return console.log('Please provide an address.')
