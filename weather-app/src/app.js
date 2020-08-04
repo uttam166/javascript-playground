@@ -4,6 +4,7 @@ const hbs = require('hbs');
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
 
+const apiKey = 'xMmtH2rQ0EA5Y1ImtCFABro9anQNpCds'; // 0GpV559MOb2IKuwn0sTzzwQtp67k1fce;
 
 const app = express();
 
@@ -35,12 +36,12 @@ app.get('/weather', (req, res) => {
         })
     }
 
-    geocode(req.query.address, (error, {latitude, longitude, place_name} = {}) => {
+    geocode(req.query.address, apiKey, (error, {locationKey, place_name} = {}) => {
         if(error){
             return res.send({ error });
         }
-
-        forecast( latitude, longitude, (error, forecastData) => {
+        
+        forecast( locationKey, apiKey, (error, forecastData) => {
             if(error){
                 return res.send({ error });
             }

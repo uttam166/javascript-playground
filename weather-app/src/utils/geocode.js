@@ -1,18 +1,21 @@
 const request = require('request');
 
-const geocode = ( address, cb ) => {
-    const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+ encodeURIComponent(address) +".json?access_token=pk.eyJ1IjoidXR0YW0xNjYiLCJhIjoiY2tkZDE3NjNjMTNjajJybXpxNXdjeGZzbSJ9.GAuUH-nff7spTLs5U8OHHw&limit=1";
+const geocode = ( address, apikey, cb ) => {
+    const url = 'http://dataservice.accuweather.com/locations/v1/search?apikey='+apikey+'&q='+encodeURIComponent(address);
 
-    request({ url , json: true}, ( error, { body } = {} ) => {
+    request({ url , json: true}, ( error, {body} ) => {
+        // console.log(url)
         if(error){
             cb('Unable to connect to location services.', undefined)
-        }else if (body.features.length === 0){
+        } else if (body.Code) { //  == 'ServiceUnavailable'
+            return cb( body.Message, undefined)
+        } else if (body === 0){
             cb('unable to find the given location. Try anathor search.', undefined)
-        } else{
+        }
+        else{
             cb(undefined, {
-            place_name : body.features[0].place_name,
-            longitude : body.features[0].center[0],
-            latitude : body.features[0].center[1],
+            place_name : body[0].LocalizedName +", "+body[0].AdministrativeArea.LocalizedName+", "+body[0].Country.LocalizedName+".",
+            locationKey : body[0].Key,
             })
         }
     })
