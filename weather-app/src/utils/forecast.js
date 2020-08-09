@@ -4,7 +4,7 @@ const forecast = (locationKey, apikey, cb) => {
 
     const url ='http://dataservice.accuweather.com/currentconditions/v1/'+ locationKey +'?apikey='+apikey+'&details=true'
 
-    request({ url , json: true}, ( error, {body} ) => {
+    request({ url , json: true}, ( error, {body} = {} ) => {
         // console.log(url)
         if(error){
             cb('Unable to connect to weather services.', undefined)
