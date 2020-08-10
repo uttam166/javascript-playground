@@ -22,7 +22,7 @@ weatherForm.addEventListener('submit', (event) =>{
     humidity.textContent = "";
     UVIndex.textContent = "";
 
-    fetch('http://localhost:3000/weather?address='+encodeURIComponent(searchFor)).then((response) => {
+    fetch('/weather?address='+encodeURIComponent(searchFor)).then((response) => {
         response.json().then((data) => {
             if(data.error){
                 description.textContent = data.error;

@@ -1,11 +1,11 @@
 const request = require('request');
 
 const geocode = ( address, apikey, cb ) => {
+
     const url = 'http://dataservice.accuweather.com/locations/v1/search?apikey='+apikey+'&q='+encodeURIComponent(address);
 
     request({ url , json: true}, ( error, {body} = {}) => {
-        console.log(url); 
-        console.log(body);
+
         if(error){
             cb('Unable to connect to location services.', undefined)
         } else if (body.Code) { //  == 'ServiceUnavailable'

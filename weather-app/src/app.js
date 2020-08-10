@@ -1,12 +1,14 @@
 const path = require('path');
 const express = require('express');
+require('dotenv').config()
 const hbs = require('hbs');
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
-
-const apiKey = 'xMmtH2rQ0EA5Y1ImtCFABro9anQNpCds'; // 0GpV559MOb2IKuwn0sTzzwQtp67k1fce;
+const API_KEY = process.env.API_KEY;
 
 const app = express();
+const port = process.env.PORT || 3000;
+
 
 // define paths for express config. 
 const publicDirPath = path.join(__dirname, '../public');
@@ -30,18 +32,20 @@ app.get('/',(req, res) => {
 })
 
 app.get('/weather', (req, res) => {
+
+
     if(!req.query.address){
         return res.send({
             error: 'Must provide a address.'
         })
     }
 
-    geocode(req.query.address, apiKey, (error, {locationKey, place_name} = {}) => {
+    geocode(req.query.address, API_KEY, (error, {locationKey, place_name} = {}) => {
         if(error){
             return res.send({ error });
         }
         
-        forecast( locationKey, apiKey, (error, forecastData) => {
+        forecast( locationKey, API_KEY, (error, forecastData) => {
             if(error){
                 return res.send({ error });
             }
@@ -69,6 +73,6 @@ app.get('*', (req, res) => {
     });
 })
 
-app.listen(3000, () =>{
-    console.log('Server starts.')
+app.listen(port, () =>{
+    console.log(`Server starts on port ${port}`)
 })
