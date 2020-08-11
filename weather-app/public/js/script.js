@@ -23,7 +23,14 @@ weatherForm.addEventListener('submit', (event) =>{
     UVIndex.textContent = "";
 
     fetch('/weather?address='+encodeURIComponent(searchFor)).then((response) => {
-        response.json().then((data) => {
+        response.json()
+        .then(response => {
+            if (!response.ok) {
+               const newError = new Error('Network response was not ok');
+                description.textContent = newError;
+              }
+            return response;
+        }).then((data) => {
             if(data.error){
                 description.textContent = data.error;
                 console.log(data.error)
@@ -37,6 +44,8 @@ weatherForm.addEventListener('submit', (event) =>{
                 humidity.textContent = "Humidity : "+data.forecast.Humidity;
                 UVIndex.textContent = "UVIndex : "+data.forecast.UVIndex;
             }
+        }).catch((error) => {
+            console.error("ERROR:" , error)
         })
     })
 })

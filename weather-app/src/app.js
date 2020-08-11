@@ -4,6 +4,8 @@ require('dotenv').config()
 const hbs = require('hbs');
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
+const issLocation = require('./utils/issLocation');
+
 const API_KEY = process.env.API_KEY;
 
 const app = express();
@@ -26,13 +28,12 @@ app.use(express.static(publicDirPath));
 
 app.get('/',(req, res) => {
     res.render('index',{
-        title: 'Welcome to sofcripto weather forcast.',
+        title: 'Welcome to sofcripto weather forecast.',
         name: 'uttam',
     })
 })
 
 app.get('/weather', (req, res) => {
-
 
     if(!req.query.address){
         return res.send({
@@ -56,6 +57,29 @@ app.get('/weather', (req, res) => {
         });
         
     })
+})
+
+app.get('/iss', (req, res) => {
+    res.render('iss',{
+        title: 'ISS current location',
+        name: 'Uttam'
+    })
+})
+
+app.get('/isslocation', (req, res) =>{
+    issLocation((error, data) => {
+    // console.log(data);
+        if(error){
+            return res.send({error})
+        }else{
+            res.send({
+                lat : data.latitude,
+                long : data.longitude,
+            })
+        }
+    })
+
+    
 })
 
 app.get('/help', (req, res) => {
