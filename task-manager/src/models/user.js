@@ -49,6 +49,7 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
+//Create virtual tasks document in users collections. 
 userSchema.virtual('tasks', {
     ref: 'Task',
     localField: '_id',
@@ -56,7 +57,7 @@ userSchema.virtual('tasks', {
 })
 
 
-
+// Modify user data before return
 userSchema.methods.toJSON = function () {
     const userObject = this.toObject();
     delete userObject.password;
@@ -65,6 +66,7 @@ userSchema.methods.toJSON = function () {
     return userObject;
 }
 
+//Generate auth token
 userSchema.methods.generateAuthToken = async function(){
     const token = jwt.sign({ _id: this._id.toString() }, 'thisIsUttamForkeys');
 
@@ -74,6 +76,7 @@ userSchema.methods.generateAuthToken = async function(){
     return token;
 }
 
+//find credentials on User model
 userSchema.statics.findByCredentials = async (email, password) =>{
     const user = await User.findOne({email});
     const isMatch = await bcrypt.compare(password, user.password);
@@ -92,6 +95,13 @@ userSchema.pre('save', async function (next) {
     }
     next();
 })
+
+// Delete user's task when user is removed
+userSchema.pre('remove', async function (next){
+    await Task.deleteMany({owner : this._id});
+    next();
+})
+
 
 const User = mongoose.model('User', userSchema)
 
